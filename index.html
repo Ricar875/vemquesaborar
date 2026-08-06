@@ -1,1 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vem K'Saborear — Pizzaria Artesanal</title>
+<meta name="description" content="Vem K'Saborear — pizzas artesanais no forno de lenha, no coração do Vale do São Francisco. Monte a sua, peça pelo WhatsApp e ganhe no cartão fidelidade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --creme: #FBF3E4;
+    --creme-2: #F3E3C4;
+    --amarelo: #D9A227;
+    --laranja: #C1440E;
+    --laranja-escuro: #8A2E0C;
+    --vermelho: #7A1620;
+    --dourado: #C9962C;
+    --carvao: #1C140F;
+    --carvao-2: #2C2018;
+    --verde: #5C7A52;
+    --texto: #241B14;
+    --texto-suave: #6B5A4B;
+    --branco: #FFFDF8;
+    --sombra: 0 14px 36px rgba(28, 16, 4, 0.2);
+    --radius: 20px;
+    --ff-display: 'Playfair Display', serif;
+    --ff-body: 'Manrope', sans-serif;
+    --ff-mono: 'Space Mono', monospace;
+  }
 
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    font-family: var(--ff-body);
+    background: var(--creme);
+    color: var(--texto);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+  img, svg{ display:block; max-width:100%; }
+  a{ color: inherit; text-decoration: none; }
+  ul{ list-style: none; }
+  button{ font-family: inherit; cursor:pointer; border:none; background:none; }
+  .container{ max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+  .eyebrow{
+    font-family: var(--ff-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--laranja-escuro);
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width: 22px; height: 2px;
+    background: var(--laranja);
+    display:inline-block;
+  }
+  h1,h2,h3{ font-family: var(--ff-display); font-weight: 600; color: var(--carvao); }
+  .section{ padding: 96px 0; }
+  .section-head{ max-width: 620px; margin-bottom: 48px; }
+  .section-head h2{ font-size: clamp(1.9rem, 3.6vw, 2.7rem); margin-top: 12px; line-height: 1.15; }
+  .section-head p{ margin-top: 14px; color: var(--texto-suave); font-size: 1.05rem; }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding: 15px 28px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    white-space: nowrap;
+  }
+  .btn-primary{
+    background: linear-gradient(135deg, var(--laranja) 0%, var(--vermelho) 100%);
+    color: var(--branco);
+    box-shadow: 0 10px 24px rgba(179, 18, 27, 0.32);
+  }
+  .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 14px 30px rgba(179, 18, 27, 0.4); }
+  .btn-ghost{
+    background: var(--branco);
+    color: var(--carvao);
+    border: 1.5px solid rgba(43,20,6,0.14);
+  }
+  .btn-ghost:hover{ border-color: var(--laranja); color: var(--laranja-escuro); }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position: sticky; top:0; z-index: 100;
+    background: rgba(255, 247, 233, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(43,20,6,0.08);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 0;
+  }
+  .logo{ display:flex; align-items:center; gap:10px; }
+  .logo-mark{ width: 40px; height: 40px; flex-shrink:0; }
+  .logo-word{ font-family: var(--ff-display); font-weight:700; font-size: 1.3rem; color: var(--carvao); }
+  .logo-word span{ color: var(--laranja-escuro); font-style: italic; }
+  .nav-links{ display:flex; gap: 32px; align-items:center; }
+  .nav-links a{ font-weight: 600; font-size: 0.92rem; color: var(--texto); transition: color .15s; }
+  .nav-links a:hover{ color: var(--laranja-escuro); }
+  .nav-cta{ display:flex; align-items:center; gap:14px; }
+  .nav-toggle{ display:none; width:38px; height:38px; }
+  .nav-toggle span, .nav-toggle::before, .nav-toggle::after{ display:none; }
+
+  @media (max-width: 860px){
+    .nav-links{
+      position: fixed; top: 72px; left:0; right:0;
+      background: var(--creme); flex-direction: column; align-items:flex-start;
+      padding: 20px 24px 28px; gap: 18px;
+      border-bottom: 1px solid rgba(43,20,6,0.1);
+      transform: translateY(-130%); transition: transform .28s ease;
+    }
+    .nav-links.open{ transform: translateY(0); }
+    .nav-toggle{ display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px; }
+    .nav-toggle span{ display:block; width:22px; height:2px; background:var(--carvao); border-radius:2px; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    padding: 64px 0 90px;
+    background: radial-gradient(120% 80% at 15% 0%, var(--creme-2) 0%, var(--creme) 60%);
+    overflow: hidden;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items:center;
+  }
+  .hero-eyebrow{ margin-bottom: 18px; }
+  .hero h1{
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em{ color: var(--laranja-escuro); font-style: italic; }
+  .hero p.lead{
+    margin-top: 20px; font-size: 1.12rem; color: var(--texto-suave); max-width: 480px;
+  }
+  .hero-actions{ margin-top: 32px; display:flex; gap: 16px; flex-wrap:wrap; }
+  .hero-stats{
+    margin-top: 44px; display:flex; gap: 36px; flex-wrap: wrap;
+  }
+  .hero-stat b{ font-family: var(--ff-display); font-size: 1.6rem; color: var(--carvao); display:block; }
+  .hero-stat span{ font-size: 0.82rem; color: var(--texto-suave); }
+
+  .hero-art{ position:relative; display:flex; align-items:center; justify-content:center; }
+  .hero-art svg{ width: 100%; max-width: 460px; filter: drop-shadow(0 26px 40px rgba(90, 35, 6, 0.28)); }
+  .flame{ transform-origin: center bottom; animation: flicker 2.6s ease-in-out infinite; }
+  .flame.f2{ animation-delay: .4s; }
+  .flame.f3{ animation-delay: .8s; }
+  @keyframes flicker{
+    0%, 100%{ transform: scaleY(1) translateY(0); opacity: .95; }
+    50%{ transform: scaleY(1.08) translateY(-3px); opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce){ .flame{ animation: none; } }
+
+  @media (max-width: 900px){
+    .hero-grid{ grid-template-columns: 1fr; }
+    .hero-art{ order:-1; }
+    .hero-art svg{ max-width: 300px; }
+  }
+
+  /* ---------- MONTE SUA PIZZA ---------- */
+  .builder{ background: var(--carvao); color: var(--creme); position:relative; }
+  .builder .section-head p{ color: rgba(255,247,233,0.66); }
+  .builder .eyebrow{ color: var(--amarelo); }
+  .builder .eyebrow::before{ background: var(--amarelo); }
+  .builder-grid{
+    display:grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items:flex-start;
+  }
+  .pizza-stage{
+    display:flex; align-items:center; justify-content:center;
+    position: sticky; top: 110px;
+  }
+  .pizza-stage svg{ width:100%; max-width: 380px; }
+
+  .builder-panel{ display:flex; flex-direction:column; gap: 30px; }
+  .field-label{
+    font-family: var(--ff-mono); font-size: 0.75rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--amarelo); margin-bottom: 12px; display:block;
+  }
+  .size-row{ display:flex; gap: 12px; flex-wrap: wrap; }
+  .size-btn{
+    flex:1; min-width: 100px;
+    background: rgba(255,247,233,0.06);
+    border: 1.5px solid rgba(255,247,233,0.18);
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align:center;
+    transition: all .15s ease;
+  }
+  .size-btn b{ display:block; font-family: var(--ff-display); font-size: 1.1rem; }
+  .size-btn span{ font-family: var(--ff-mono); font-size: 0.85rem; color: rgba(255,247,233,0.6); }
+  .size-btn.active{
+    background: linear-gradient(135deg, var(--laranja), var(--vermelho));
+    border-color: transparent;
+  }
+  .size-btn.active span{ color: rgba(255,255,255,0.85); }
+
+  .mode-row{ display:flex; gap: 12px; }
+  .mode-btn{
+    padding: 10px 18px; border-radius: 100px;
+    border: 1.5px solid rgba(255,247,233,0.18);
+    font-size: 0.86rem; font-weight: 600;
+  }
+  .mode-btn.active{ background: var(--amarelo); color: var(--carvao); border-color: transparent; }
+
+  .flavor-grid{
+    display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+  }
+  .flavor-pick{
+    background: rgba(255,247,233,0.06);
+    border: 1.5px solid rgba(255,247,233,0.14);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    text-align:left;
+    transition: all .15s ease;
+  }
+  .flavor-pick.active{ background: rgba(242,169,0,0.16); border-color: var(--amarelo); color: var(--amarelo); }
+  .flavor-pick.disabled{ opacity: .35; pointer-events:none; }
+  #flavor2Wrap{ display:none; }
+  #flavor2Wrap.show{ display:block; }
+
+  .builder-summary{
+    background: rgba(255,247,233,0.06);
+    border: 1px solid rgba(255,247,233,0.16);
+    border-radius: 16px;
+    padding: 22px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap: 20px; flex-wrap:wrap;
+  }
+  .builder-summary .desc{ font-size: 0.95rem; color: rgba(255,247,233,0.8); }
+  .builder-summary .price{ font-family: var(--ff-display); font-size: 1.9rem; color: var(--amarelo); white-space:nowrap; }
+
+  @media (max-width: 900px){
+    .builder-grid{ grid-template-columns: 1fr; }
+    .pizza-stage{ position: static; }
+  }
+
+  /* ---------- CARDÁPIO ---------- */
+  .tabs{ display:flex; gap: 10px; margin-bottom: 36px; flex-wrap:wrap; }
+  .tab-btn{
+    padding: 11px 22px; border-radius: 100px;
+    border: 1.5px solid rgba(43,20,6,0.14);
+    font-weight: 700; font-size: 0.9rem; color: var(--texto-suave);
+    background: var(--branco);
+  }
+  .tab-btn.active{ background: var(--carvao); color: var(--creme); border-color: var(--carvao); }
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:grid; }
+  .menu-grid{
+    grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  @media (max-width: 900px){ .menu-grid{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 600px){ .menu-grid{ grid-template-columns: 1fr; } }
+
+  .menu-card{
+    background: var(--branco);
+    border-radius: var(--radius);
+    padding: 26px 22px;
+    box-shadow: var(--sombra);
+    border: 1px solid rgba(43,20,6,0.05);
+    position:relative;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .menu-card:hover{ transform: translateY(-4px); }
+  .menu-card .slice{ width: 48px; height: 48px; margin-bottom: 14px; }
+  .menu-card h3{ font-size: 1.15rem; margin-bottom: 6px; }
+  .menu-card p{ font-size: 0.9rem; color: var(--texto-suave); }
+  .badge-real{
+    position:absolute; top: 18px; right: 18px;
+    font-family: var(--ff-mono); font-size: 0.65rem;
+    background: var(--verde); color: white;
+    padding: 4px 10px; border-radius: 100px;
+  }
+  .menu-note{
+    margin-top: 28px; font-size: 0.88rem; color: var(--texto-suave);
+    display:flex; gap:10px; align-items:flex-start;
+    background: var(--creme-2); padding: 14px 18px; border-radius: 14px; max-width: 560px;
+  }
+
+  /* ---------- PRECOS STRIP ---------- */
+  .price-strip{
+    background: var(--laranja); color: white;
+    padding: 26px 0;
+  }
+  .price-strip .container{
+    display:flex; justify-content:center; gap: 48px; flex-wrap:wrap; text-align:center;
+  }
+  .price-strip .item b{ font-family: var(--ff-display); font-size: 1.7rem; display:block; }
+  .price-strip .item span{ font-family: var(--ff-mono); font-size: 0.78rem; opacity:.85; }
+
+  /* ---------- FIDELIDADE ---------- */
+  .loyalty{ background: var(--creme-2); }
+  .loyalty-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items:center; }
+  .loyalty-card{
+    background: var(--branco); border-radius: 26px; padding: 32px;
+    box-shadow: var(--sombra);
+    border: 2px dashed rgba(232, 89, 12, 0.35);
+  }
+  .loyalty-card-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 22px; }
+  .loyalty-card-top .logo-word{ font-size: 1.1rem; }
+  .loyalty-card-top span{ font-family: var(--ff-mono); font-size: 0.7rem; color: var(--texto-suave); }
+  .stamp-grid{ display:grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .stamp{
+    aspect-ratio: 1; border-radius: 50%;
+    border: 1.5px dashed rgba(43,20,6,0.25);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .stamp.filled{ background: var(--laranja); border-style: solid; border-color: var(--laranja); }
+  .stamp.filled svg{ width: 55%; }
+  .loyalty ul{ margin-top: 22px; display:flex; flex-direction:column; gap: 14px; }
+  .loyalty li{ display:flex; gap: 12px; font-size: 0.98rem; color: var(--texto); }
+  .loyalty li b{ color: var(--laranja-escuro); font-family: var(--ff-mono); }
+
+  @media (max-width: 900px){ .loyalty-grid{ grid-template-columns: 1fr; } }
+
+  /* ---------- DEPOIMENTOS ---------- */
+  .testi-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 900px){ .testi-grid{ grid-template-columns: 1fr; } }
+  .testi-card{
+    background: var(--branco); border-radius: 20px; padding: 26px;
+    box-shadow: var(--sombra);
+  }
+  .stars{ color: var(--amarelo); letter-spacing: 3px; margin-bottom: 14px; font-size: 0.95rem; }
+  .testi-card p{ font-size: 0.98rem; color: var(--texto); font-style: italic; }
+  .testi-name{ margin-top: 16px; font-weight: 700; font-family: var(--ff-mono); font-size: 0.82rem; color: var(--texto-suave); }
+
+  /* ---------- CONTATO ---------- */
+  .contact{ background: var(--carvao); color: var(--creme); }
+  .contact .eyebrow{ color: var(--amarelo); }
+  .contact .eyebrow::before{ background: var(--amarelo); }
+  .contact-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .contact-list{ margin-top: 22px; display:flex; flex-direction:column; gap: 18px; }
+  .contact-item{ display:flex; gap: 14px; }
+  .contact-item .ic{ width: 22px; height: 22px; flex-shrink:0; margin-top:2px; color: var(--amarelo); }
+  .contact-item b{ display:block; font-size:0.95rem; }
+  .contact-item span{ font-size: 0.88rem; color: rgba(255,247,233,0.65); }
+
+  footer{ background: var(--carvao); border-top: 1px solid rgba(255,247,233,0.1); padding: 24px 0; }
+  footer .container{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap: 12px; }
+  footer p{ font-size: 0.82rem; color: rgba(255,247,233,0.5); }
+
+  /* ---------- WHATSAPP FLOAT ---------- */
+  .wa-float{
+    position: fixed; bottom: 24px; right: 24px; z-index: 200;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: #25D366;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 12px 26px rgba(0,0,0,0.28);
+    transition: transform .18s ease;
+  }
+  .wa-float:hover{ transform: scale(1.07); }
+  .wa-float svg{ width: 30px; height: 30px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#top" class="logo">
+      <svg class="logo-mark" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="19" fill="#D9A227"/>
+        <circle cx="20" cy="20" r="14" fill="#FBF3E4"/>
+        <circle cx="14" cy="15" r="2" fill="#7A1620"/>
+        <circle cx="24" cy="13" r="1.6" fill="#5C7A52"/>
+        <circle cx="26" cy="22" r="2" fill="#7A1620"/>
+        <circle cx="16" cy="25" r="1.6" fill="#5C7A52"/>
+        <circle cx="21" cy="19" r="1.4" fill="#C1440E"/>
+      </svg>
+      <span class="logo-word">Vem K'<span>Saborear</span></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#cardapio">Cardápio</a>
+      <a href="#montar">Monte a sua</a>
+      <a href="#fidelidade">Fidelidade</a>
+      <a href="#depoimentos">Depoimentos</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#montar" class="btn btn-primary" style="padding:12px 20px;font-size:0.85rem;">Pedir agora</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow hero-eyebrow">Forno a lenha · Vale do São Francisco</div>
+      <h1>Pizza feita com <em>fogo, tempo</em> e carinho de verdade.</h1>
+      <p class="lead">Massa de fermentação lenta, ingredientes selecionados e aquele calor de forno a lenha que só a Vem K'Saborear tem. Monte a sua do seu jeito e receba quentinha em casa.</p>
+      <div class="hero-actions">
+        <a href="#montar" class="btn btn-primary">Montar minha pizza</a>
+        <a href="#cardapio" class="btn btn-ghost">Ver cardápio completo</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>+15</b><span>sabores no cardápio</span></div>
+        <div class="hero-stat"><b>100%</b><span>forno a lenha</span></div>
+        <div class="hero-stat"><b>10ª</b><span>pizza grátis na fidelidade</span></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 400 400" fill="none">
+        <ellipse cx="200" cy="330" rx="150" ry="18" fill="#1C140F" opacity="0.08"/>
+        <path class="flame f1" d="M170 250c-10-22 4-34 6-50-14 10-24 26-22 44 2 16 12 24 16 6z" fill="#D9A227"/>
+        <path class="flame f2" d="M200 260c-14-28 6-42 8-64-18 12-30 34-26 56 3 20 16 28 18 8z" fill="#C1440E"/>
+        <path class="flame f3" d="M230 250c-10-22 4-34 6-50-14 10-24 26-22 44 2 16 12 24 16 6z" fill="#D9A227"/>
+        <circle cx="200" cy="235" r="118" fill="#E6C87A"/>
+        <circle cx="200" cy="235" r="104" fill="#D9A227"/>
+        <circle cx="200" cy="235" r="92" fill="#E2B354"/>
+        <g>
+          <circle cx="165" cy="205" r="9" fill="#7A1620"/>
+          <circle cx="230" cy="195" r="9" fill="#7A1620"/>
+          <circle cx="245" cy="255" r="9" fill="#7A1620"/>
+          <circle cx="180" cy="270" r="9" fill="#7A1620"/>
+          <circle cx="215" cy="240" r="9" fill="#7A1620"/>
+          <circle cx="195" cy="210" r="6" fill="#5C7A52"/>
+          <circle cx="250" cy="220" r="6" fill="#5C7A52"/>
+          <circle cx="160" cy="245" r="6" fill="#5C7A52"/>
+          <circle cx="215" cy="270" r="6" fill="#5C7A52"/>
+        </g>
+        <circle cx="200" cy="235" r="92" fill="none" stroke="#C1440E" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="price-strip">
+  <div class="container">
+    <div class="item"><b>P · R$20</b><span>Pequena</span></div>
+    <div class="item"><b>M · R$30</b><span>Média</span></div>
+    <div class="item"><b>G · R$40</b><span>Grande</span></div>
+  </div>
+</section>
+
+<section class="section builder" id="montar">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Monte do seu jeito</div>
+      <h2>A pizza é sua. Escolha do tamanho ao sabor.</h2>
+      <p>Selecione o tamanho, o sabor (ou meio a meio) e veja o resumo do pedido pronto pra mandar no WhatsApp.</p>
+    </div>
+
+    <div class="builder-grid">
+      <div class="pizza-stage">
+        <svg id="pizzaPreview" viewBox="0 0 300 300" fill="none">
+          <circle cx="150" cy="150" r="128" fill="#E6C87A"/>
+          <circle cx="150" cy="150" r="112" fill="#D9A227"/>
+          <path id="half2Base" d="M150 150 L150 38 A112 112 0 0 1 150 262 Z" fill="#D9A227" opacity="0"/>
+          <circle id="baseFill" cx="150" cy="150" r="96" fill="#E2B354"/>
+          <path id="half2Fill" d="M150 150 L150 54 A96 96 0 0 1 150 246 Z" fill="#E2B354" opacity="0"/>
+          <g id="toppings"></g>
+          <circle cx="150" cy="150" r="96" fill="none" stroke="#C1440E" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>
+          <line id="halfLine" x1="150" y1="38" x2="150" y2="262" stroke="#8A2E0C" stroke-width="2" stroke-dasharray="4 5" opacity="0"/>
+        </svg>
+      </div>
+
+      <div class="builder-panel">
+        <div>
+          <span class="field-label">1 · Tamanho — toca e já pede no WhatsApp</span>
+          <div class="size-row" id="sizeRow">
+            <button class="size-btn active" data-size="P" data-price="20"><b>Pequena</b><span>R$20</span></button>
+            <button class="size-btn" data-size="M" data-price="30"><b>Média</b><span>R$30</span></button>
+            <button class="size-btn" data-size="G" data-price="40"><b>Grande</b><span>R$40</span></button>
+          </div>
+        </div>
+
+        <div>
+          <span class="field-label">2 · Formato</span>
+          <div class="mode-row" id="modeRow">
+            <button class="mode-btn active" data-mode="1">Sabor único</button>
+            <button class="mode-btn" data-mode="2">Meio a meio</button>
+          </div>
+        </div>
+
+        <div>
+          <span class="field-label" id="flavor1Label">3 · Sabor</span>
+          <div class="flavor-grid" id="flavor1Grid"></div>
+        </div>
+
+        <div id="flavor2Wrap">
+          <span class="field-label">Segundo sabor</span>
+          <div class="flavor-grid" id="flavor2Grid"></div>
+        </div>
+
+        <div class="builder-summary">
+          <div class="desc" id="summaryDesc">Pizza Pequena — escolha o sabor</div>
+          <div class="price" id="summaryPrice">R$20,00</div>
+        </div>
+
+        <a href="#" target="_blank" class="btn btn-primary" id="waOrderBtn" style="justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.05 4C7.4 4 3.6 7.8 3.6 12.45c0 1.55.42 3.06 1.2 4.38L3.5 21l4.28-1.28a8.85 8.85 0 0 0 4.27 1.09h.01c4.65 0 8.44-3.79 8.44-8.44a8.4 8.4 0 0 0-2.9-6.05Zm-5.55 13c-1.33 0-2.63-.36-3.77-1.03l-.27-.16-2.8.84.84-2.73-.18-.28a7.02 7.02 0 0 1-1.08-3.78 7.05 7.05 0 0 1 7.06-7.05c1.88 0 3.65.74 4.98 2.07a7 7 0 0 1 2.06 4.98c0 3.9-3.16 7.14-7.04 7.14Z"/></svg>
+          Pedir essa pizza no WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cardapio">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Cardápio completo</div>
+      <h2>Salgadas e doces, do jeito que só a casa sabe fazer.</h2>
+      <p>Todos os sabores saem no tamanho que você escolher — P (R$20), M (R$30) ou G (R$40).</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="salgadas">Salgadas</button>
+      <button class="tab-btn" data-tab="doces">Doces</button>
+    </div>
+
+    <div class="tab-panel menu-grid active" id="tab-salgadas"></div>
+    <div class="tab-panel menu-grid" id="tab-doces"></div>
+
+    <div class="menu-note">
+      ✦ As ilustrações representam os sabores enquanto preparamos as fotos reais da casa — em breve trocamos por fotos das nossas pizzas de verdade.
+    </div>
+  </div>
+</section>
+
+<section class="section loyalty" id="fidelidade">
+  <div class="container loyalty-grid">
+    <div class="loyalty-card">
+      <div class="loyalty-card-top">
+        <div class="logo-word">Vem K'<span style="color:#C1440E;font-style:italic;">Saborear</span></div>
+        <span>CARTÃO FIDELIDADE</span>
+      </div>
+      <div class="stamp-grid">
+        <div class="stamp filled"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#D9A227"/></svg></div>
+        <div class="stamp filled"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#D9A227"/></svg></div>
+        <div class="stamp filled"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#D9A227"/></svg></div>
+        <div class="stamp"></div>
+        <div class="stamp"></div>
+        <div class="stamp"></div>
+        <div class="stamp"></div>
+        <div class="stamp"></div>
+        <div class="stamp"></div>
+        <div class="stamp" style="border-color:#C1440E;"></div>
+      </div>
+    </div>
+    <div>
+      <div class="eyebrow">Cartão fidelidade</div>
+      <h2>A cada pizza, um carimbo. Na décima, é por nossa conta.</h2>
+      <ul>
+        <li><b>01</b> Peça pelo WhatsApp e avise que quer participar.</li>
+        <li><b>02</b> A cada pizza P, M ou G, você ganha um carimbo.</li>
+        <li><b>03</b> Ao completar 10 carimbos, a próxima pizza é grátis — no tamanho que você escolher.</li>
+      </ul>
+      <a href="#contato" class="btn btn-primary" style="margin-top:26px;">Quero participar</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="depoimentos">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Quem já provou</div>
+      <h2>O que o povo fala da Vem K'Saborear.</h2>
+      <p>Depoimentos de exemplo — assim que tivermos as avaliações reais dos clientes, trocamos por aqui.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Massa fininha e crocante, do jeito que eu gosto. A Caipira com catupiry é surreal."</p>
+        <div class="testi-name">— Cliente Vem K'Saborear</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Pedi meio a meio pelo WhatsApp, chegou rapidinho e bem quentinha. Virou pizza fixa aqui de casa."</p>
+        <div class="testi-name">— Cliente Vem K'Saborear</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"O cartão fidelidade compensa demais, já tirei duas pizzas de graça. Atendimento nota 10."</p>
+        <div class="testi-name">— Cliente Vem K'Saborear</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section contact" id="contato">
+  <div class="container contact-grid">
+    <div>
+      <div class="eyebrow">Fale com a gente</div>
+      <h2 style="color:var(--creme);">Peça a sua agora.</h2>
+      <div class="contact-list">
+        <div class="contact-item">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.05 4C7.4 4 3.6 7.8 3.6 12.45c0 1.55.42 3.06 1.2 4.38L3.5 21l4.28-1.28a8.85 8.85 0 0 0 4.27 1.09h.01c4.65 0 8.44-3.79 8.44-8.44a8.4 8.4 0 0 0-2.9-6.05Z"/></svg>
+          <div><b>WhatsApp</b><span>(75) 99978-2422</span></div>
+        </div>
+        <div class="contact-item">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <div><b>Endereço</b><span>Pov. Trindade — Paulo Afonso · BA</span></div>
+        </div>
+        <div class="contact-item">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <div><b>Horário</b><span>Terça a domingo, 18h às 23h (confirmar horário oficial)</span></div>
+        </div>
+      </div>
+      <a href="https://wa.me/5575999782422" target="_blank" class="btn btn-primary" style="margin-top:30px;">Chamar no WhatsApp</a>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 300 300" fill="none">
+        <circle cx="150" cy="150" r="120" fill="#2C2018"/>
+        <circle cx="150" cy="150" r="104" fill="#D9A227"/>
+        <circle cx="150" cy="150" r="90" fill="#E2B354"/>
+        <circle cx="120" cy="120" r="8" fill="#7A1620"/>
+        <circle cx="175" cy="130" r="8" fill="#7A1620"/>
+        <circle cx="190" cy="180" r="8" fill="#7A1620"/>
+        <circle cx="130" cy="190" r="8" fill="#7A1620"/>
+        <circle cx="155" cy="155" r="6" fill="#5C7A52"/>
+        <circle cx="200" cy="150" r="6" fill="#5C7A52"/>
+        <circle cx="115" cy="160" r="6" fill="#5C7A52"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 Vem K'Saborear — Pizzaria e Pastelaria, Pov. Trindade · Paulo Afonso · BA</p>
+    <p>Feito com carinho para o Vale do São Francisco</p>
+  </div>
+</footer>
+
+<a href="https://wa.me/5575999782422" target="_blank" class="wa-float" aria-label="Pedir no WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.05 4C7.4 4 3.6 7.8 3.6 12.45c0 1.55.42 3.06 1.2 4.38L3.5 21l4.28-1.28a8.85 8.85 0 0 0 4.27 1.09h.01c4.65 0 8.44-3.79 8.44-8.44a8.4 8.4 0 0 0-2.9-6.05Zm-5.55 13c-1.33 0-2.63-.36-3.77-1.03l-.27-.16-2.8.84.84-2.73-.18-.28a7.02 7.02 0 0 1-1.08-3.78 7.05 7.05 0 0 1 7.06-7.05c1.88 0 3.65.74 4.98 2.07a7 7 0 0 1 2.06 4.98c0 3.9-3.16 7.14-7.04 7.14Z"/></svg>
+</a>
+
+<script>
+/* ---------- dados do cardápio ---------- */
+const MENU = {
+  salgadas: [
+    { nome: "Caipira", desc: "Molho de tomate, mussarela, frango, milho, catupiry e azeitona.", cor:"#D9A227", real:true },
+    { nome: "Frango Catupiry", desc: "Molho de tomate, mussarela, catupiry e frango.", cor:"#E2B354" },
+    { nome: "Frango", desc: "Molho de tomate, mussarela e frango.", cor:"#D9A227" },
+    { nome: "Francesa", desc: "Molho de tomate, mussarela e cebola (confirmar demais ingredientes com a casa).", cor:"#7A1620" },
+    { nome: "Milho Verde", desc: "Molho de tomate, mussarela e milho verde.", cor:"#D9A227" },
+    { nome: "Mista", desc: "Molho de tomate, mussarela e presunto.", cor:"#E2B354" },
+    { nome: "Napolitana", desc: "Molho de tomate, mussarela, frango, milho verde e ervilha.", cor:"#5C7A52" },
+    { nome: "3 Queijo", desc: "Molho de tomate, mussarela, parmesão e coalho.", cor:"#E2B354" },
+    { nome: "Atum", desc: "Molho de tomate, mussarela e atum.", cor:"#C1440E" },
+    { nome: "Calabresa", desc: "Molho de tomate, mussarela, calabresa, cebola e azeitona.", cor:"#7A1620" },
+    { nome: "Portuguesa", desc: "Molho de tomate, mussarela, presunto, ovos, azeitona, cebola e pimentão.", cor:"#5C7A52" },
+    { nome: "Carne Seca", desc: "Molho de tomate, mussarela, carne seca, cebola e tomate.", cor:"#8A2E0C" },
+    { nome: "Nordestina", desc: "Molho de tomate, mussarela, milho verde, cebola, calabresa ralada e pimenta calabresa.", cor:"#7A1620" },
+    { nome: "Moda da Casa", desc: "Molho de tomate, mussarela, presunto, calabresa, tomate, pimentão, cebola, azeitona, milho verde e orégano.", cor:"#C1440E" },
+  ],
+  doces: [
+    { nome: "Romeu e Julieta", desc: "Leite condensado, mussarela e goiabada.", cor:"#7A1620" },
+    { nome: "Banana", desc: "Leite condensado, mussarela, banana e canela.", cor:"#D9A227" },
+    { nome: "Brigadeiro", desc: "Leite condensado, mussarela, pedaços de chocolate, chocolate e granulado.", cor:"#8A2E0C" },
+  ]
+};
+
+function sliceIcon(cor){
+  return `<svg class="slice" viewBox="0 0 48 48" fill="none">
+    <path d="M24 4 L44 40 A22 22 0 0 1 4 40 Z" fill="${cor}"/>
+    <circle cx="24" cy="26" r="3" fill="#FBF3E4"/>
+    <circle cx="17" cy="33" r="2.4" fill="#FBF3E4"/>
+    <circle cx="31" cy="33" r="2.4" fill="#FBF3E4"/>
+  </svg>`;
+}
+
+function renderMenu(){
+  Object.keys(MENU).forEach(cat=>{
+    const el = document.getElementById('tab-'+cat);
+    el.innerHTML = MENU[cat].map(item => `
+      <div class="menu-card">
+        ${item.real ? '<div class="badge-real">📸 Em breve foto real</div>' : ''}
+        ${sliceIcon(item.cor)}
+        <h3>${item.nome}</h3>
+        <p>${item.desc}</p>
+      </div>
+    `).join('');
+  });
+}
+renderMenu();
+
+/* ---------- tabs ---------- */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---------- menu mobile ---------- */
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', ()=> navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=> navLinks.classList.remove('open')));
+
+/* ---------- monte sua pizza ---------- */
+const ALL_FLAVORS = [...MENU.salgadas, ...MENU.doces].map(f=>f.nome);
+const FLAVOR_COLOR = {};
+[...MENU.salgadas, ...MENU.doces].forEach(f=> FLAVOR_COLOR[f.nome]=f.cor);
+
+let state = { size:'P', price:20, mode:1, f1: ALL_FLAVORS[0], f2: null };
+
+const flavor1Grid = document.getElementById('flavor1Grid');
+const flavor2Grid = document.getElementById('flavor2Grid');
+
+function buildFlavorGrid(container, selected, onPick){
+  container.innerHTML = ALL_FLAVORS.map(name => `
+    <button type="button" class="flavor-pick ${name===selected?'active':''}" data-name="${name}">${name}</button>
+  `).join('');
+  container.querySelectorAll('.flavor-pick').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      onPick(btn.dataset.name);
+      container.querySelectorAll('.flavor-pick').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+}
+
+buildFlavorGrid(flavor1Grid, state.f1, (name)=>{ state.f1 = name; update(); });
+buildFlavorGrid(flavor2Grid, state.f2, (name)=>{ state.f2 = name; update(); });
+
+document.querySelectorAll('.size-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    state.size = btn.dataset.size;
+    state.price = Number(btn.dataset.price);
+    update();
+    goToWhatsapp();
+  });
+});
+
+document.querySelectorAll('.mode-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    state.mode = Number(btn.dataset.mode);
+    document.getElementById('flavor2Wrap').classList.toggle('show', state.mode===2);
+    document.getElementById('flavor1Label').textContent = state.mode===2 ? '3 · Primeiro sabor' : '3 · Sabor';
+    if(state.mode===2 && !state.f2){ state.f2 = ALL_FLAVORS[1]; buildFlavorGrid(flavor2Grid, state.f2, (name)=>{ state.f2=name; update(); }); }
+    update();
+  });
+});
+
+function paintPizza(){
+  const toppings = document.getElementById('toppings');
+  const half2Base = document.getElementById('half2Base');
+  const half2Fill = document.getElementById('half2Fill');
+  const baseFill = document.getElementById('baseFill');
+  const halfLine = document.getElementById('halfLine');
+
+  baseFill.setAttribute('fill', FLAVOR_COLOR[state.f1] ? shade(FLAVOR_COLOR[state.f1]) : '#E2B354');
+
+  if(state.mode===2 && state.f2){
+    half2Base.setAttribute('opacity','1');
+    half2Fill.setAttribute('opacity','1');
+    half2Fill.setAttribute('fill', shade(FLAVOR_COLOR[state.f2] || '#E2B354'));
+    halfLine.setAttribute('opacity','1');
+  } else {
+    half2Base.setAttribute('opacity','0');
+    half2Fill.setAttribute('opacity','0');
+    halfLine.setAttribute('opacity','0');
+  }
+
+  // toppings (pontinhos aleatórios fixos, decorativos)
+  const pts = [[120,120],[178,128],[192,178],[132,188],[150,150],[165,205],[110,165],[205,150]];
+  toppings.innerHTML = pts.map((p,i)=>{
+    const isRight = p[0] >= 150;
+    const color = (state.mode===2 && state.f2 && isRight) ? FLAVOR_COLOR[state.f2] : FLAVOR_COLOR[state.f1];
+    const r = i%3===0 ? 7 : 5;
+    return `<circle cx="${p[0]}" cy="${p[1]}" r="${r}" fill="${color || '#7A1620'}" opacity="0.9"/>`;
+  }).join('');
+}
+
+function shade(hex){ return hex; }
+
+function update(){
+  paintPizza();
+  const sizeName = {P:'Pequena', M:'Média', G:'Grande'}[state.size];
+  let desc, waFlavor;
+  if(state.mode===2 && state.f2){
+    desc = `Pizza ${sizeName} — meio ${state.f1} / meio ${state.f2}`;
+    waFlavor = `meio a meio: ${state.f1} + ${state.f2}`;
+  } else {
+    desc = `Pizza ${sizeName} — ${state.f1}`;
+    waFlavor = state.f1;
+  }
+  document.getElementById('summaryDesc').textContent = desc;
+  document.getElementById('summaryPrice').textContent = 'R$' + state.price.toFixed(2).replace('.', ',');
+
+  const msg = `Olá! Quero pedir uma pizza ${sizeName} (${state.size}) de ${waFlavor}. Valor: R$${state.price.toFixed(2).replace('.', ',')}`;
+  document.getElementById('waOrderBtn').href = `https://wa.me/5575999782422?text=${encodeURIComponent(msg)}`;
+}
+
+function goToWhatsapp(){
+  const link = document.getElementById('waOrderBtn').href;
+  window.open(link, '_blank');
+}
+
+update();
+</script>
+
+</body>
+</html>
