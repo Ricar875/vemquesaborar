@@ -1,3 +1,4 @@
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -143,3 +144,11 @@ footer{
   .pizza{grid-template-columns:1fr}.sizes{justify-content:flex-start}.section-title{gap:10px}
   .section-title span{font-size:11px}
 }
+
+.pizza-photo{
+  width:100%;height:190px;object-fit:cover;border-radius:11px;
+  grid-column:1/-1;border:1px solid #dfc59a;
+  box-shadow:0 5px 14px #3a211512
+}
+.pizza-info{min-width:0}
+@media(max-width:800px){.pizza-photo{height:210px}}
